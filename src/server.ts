@@ -22,6 +22,7 @@ io.on('connection', async (socket:ExtSocket) => {
         let user = data.user
         let room = user.room
 
+        socket.data = {}
         socket.data.user = user
         socket.data.room = room 
 
