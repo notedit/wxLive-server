@@ -26,22 +26,29 @@ io.on('connection', async (socket:ExtSocket) => {
         socket.data.user = user
         socket.data.room = room 
 
-        let pushers = roomPushers[room] || {}
+        if(!roomPushers[room]){
+            roomPushers[room] = {}
+        }
+        let pushers = roomPushers[room]
 
         socket.join(room)
 
         cb()
 
+        console.log('pushers',pushers, typeof pushers)
+
         let pusherarray = []
-        for(let pair of pushers){
-            let [user,pushUrl] = pair
+        for(let key in pushers){
             pusherarray.push({
-                user:user,
-                pushUrl:pushUrl
+                user:key,
+                pushUrl:pushers[key]
             })
         }
 
+        console.log('pushers', pusherarray)
+
         socket.emit('pushers',pusherarray)
+        
     })
 
     socket.on('addPusher', async (data:any) => {
