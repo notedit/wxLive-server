@@ -32,7 +32,16 @@ io.on('connection', async (socket:ExtSocket) => {
 
         cb()
 
-        socket.emit('pushers',pushers)
+        let pusherarray = []
+        for(let pair of pushers){
+            let [user,pushUrl] = pair
+            pusherarray.push({
+                user:user,
+                pushUrl:pushUrl
+            })
+        }
+
+        socket.emit('pushers',pusherarray)
     })
 
     socket.on('addPusher', async (data:any) => {
